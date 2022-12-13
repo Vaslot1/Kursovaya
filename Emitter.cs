@@ -48,10 +48,7 @@ particle.Life -= 1;
                 }
                 else
                 {
-                    foreach (var point in impactPoints)
-                    {
-                        point.ImpactParticle(particle);
-                    }
+                    
 
                     particle.SpeedX += GravitationX;
                     particle.SpeedY += GravitationY;
@@ -85,10 +82,7 @@ particle.Life -= 1;
             {
                 particle.Draw(g);
             }
-            foreach (var point in impactPoints)
-            {
-                point.Render(g);
-            }
+           
 
         }
         public virtual void ResetParticle(Particle particle)
