@@ -15,8 +15,8 @@ namespace Kursovaya
         public float GravitationX = 0;
         public float GravitationY = 0;
         public int ParticlesCount = 5000;
-        public int X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
-        public int Y; // соответствующая координата Y 
+        public float X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
+        public float Y; // соответствующая координата Y 
         public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
         public int Spreading = 360; // разброс частиц относительно Direction
         public int SpeedMin = 1; // начальная минимальная скорость движения частицы
@@ -24,18 +24,18 @@ namespace Kursovaya
         public int RadiusMin = 2; // минимальный радиус частицы
         public int RadiusMax = 10; // максимальный радиус частицы
         public int LifeMin = 20; // минимальное время жизни частицы
-        public int LifeMax = 100; // максимальное время жизни частицы
-        public int ParticlesPerTick = 1;
+        public int LifeMax = 40; // максимальное время жизни частицы
+        public int ParticlesPerTick = 100;
 
-        public Color ColorFrom = Color.White; // начальный цвет частицы
-        public Color ColorTo = Color.FromArgb(0, Color.Black); // конечный цвет частиц
+        public Color ColorFrom = Color.Orange; // начальный цвет частицы
+        public Color ColorTo = Color.FromArgb(0, Color.Red); // конечный цвет частиц
         public void UpdateState()
         {
             int particlesToCreate = ParticlesPerTick;
             foreach (var particle in particles)
             {
-particle.Life -= 1;
 
+                particle.Life -= 5;
                 if (particle.Life < 0)
                 {
                     
@@ -48,7 +48,7 @@ particle.Life -= 1;
                 }
                 else
                 {
-                    
+
 
                     particle.SpeedX += GravitationX;
                     particle.SpeedY += GravitationY;
@@ -58,20 +58,12 @@ particle.Life -= 1;
                     particle.Y += particle.SpeedY;
                 }
             }
-            for (var i = 0; i < 10; ++i)
+            while (particlesToCreate >= 1)
             {
-                if (particles.Count < ParticlesCount)
-                {
-
-                    var particle = CreateParticle();
-
-                    ResetParticle(particle);
-                    particles.Add(particle);
-                }
-                else
-                {
-                    break;
-                }
+                particlesToCreate -= 1;
+                var particle = CreateParticle();
+                ResetParticle(particle);
+                particles.Add(particle);
             }
         }
 

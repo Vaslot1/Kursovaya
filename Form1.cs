@@ -11,6 +11,7 @@ namespace Kursovaya
         Random rnd = new Random();
         int pointsCount = 0;
         SoploEmitter emitter;
+        bool flag;
         public Form1()
         {
             InitializeComponent();
@@ -18,8 +19,11 @@ namespace Kursovaya
             //emitter = new SoploEmitter(player);
             emitter = new SoploEmitter
             {
+                X = player.X-10,
+                Y = player.Y-20,
                 rocket = player,
-                GravitationY = 0.25f
+                GravitationY = 0,
+                Spreading = 180
             };
             player.OnOverlap += (p, obj) =>
             {
@@ -58,11 +62,13 @@ namespace Kursovaya
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
+            flag = false;
             var g = e.Graphics;
             g.Clear(Color.Black);
             updatePlayer();
+            if(marker != null) { 
             emitter.UpdateState();
-            emitter.Render(g);
+            emitter.Render(g);}
             foreach (var obj in objects.ToList())
             {
                 if (obj != player && player.Overlaps(obj, g))
@@ -85,18 +91,12 @@ namespace Kursovaya
 
             }
             lbScore.Text = "Очки: " + pointsCount;
+           
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            //emitter.UpdateState();
-
-            //using (var g = Graphics.FromImage(pbMain.Image))
-            //{
-            //    g.Clear(Color.Black);
-            //    emitter.Render(g);
-
-            //}
+           
             pbMain.Invalidate();
         }
 
@@ -106,31 +106,47 @@ namespace Kursovaya
             {
                 marker = new Marker(0, 0, 0);
                 objects.Add(marker); 
+                flag = true;
             }
             marker.X = e.X;
             marker.Y = e.Y;
+
         }
         private void updatePlayer()
         {
             if (marker != null)
             {
+
                 float dx = marker.X - player.X;
                 float dy = marker.Y - player.Y;
+                float dex= marker.X - emitter.X;
+                float dey = marker.Y - emitter.Y;
                 float length = MathF.Sqrt(dx * dx + dy * dy);
+                float lengthE = MathF.Sqrt(dex * dex + dey * dey);
                 dx /= length;
                 dy /= length;
+                dex /= lengthE;
+                dey/= lengthE;
 
 
                 player.vX += dx * 0.9f;
                 player.vY += dy * 0.9f;
+                emitter.vX += dex * 0.9f;
+                emitter.vY += dey * 0.9f;
+
                 player.Angle = 5 - MathF.Atan2(player.vX, player.vY) * 180 / MathF.PI;
+                
             }
             player.vX += -player.vX * 0.1f;
             player.vY += -player.vY * 0.1f;
+            emitter.vX += -emitter.vX * 0.1f;
+            emitter.vY += -emitter.vY * 0.1f;
 
 
             player.X += player.vX;
             player.Y += player.vY;
+            emitter.X += emitter.vX;
+            emitter.Y += emitter.vY;
         }
         
 
