@@ -11,19 +11,18 @@ namespace Kursovaya
         Random rnd = new Random();
         int pointsCount = 0;
         SoploEmitter emitter;
-        bool flag;
+        BoomEmitter tempEmitter;
+        bool flag=false;
         public Form1()
         {
             InitializeComponent();
             player = new Rocket(pbMain.Width / 2, pbMain.Height / 2, 0);
-            //emitter = new SoploEmitter(player);
             emitter = new SoploEmitter
             {
-                X = player.X-10,
-                Y = player.Y-20,
+                X = player.X,
+                Y = player.Y,
                 rocket = player,
-                GravitationY = 0,
-                Spreading = 180
+                GravitationY = 0
             };
             player.OnOverlap += (p, obj) =>
             {
@@ -36,13 +35,19 @@ namespace Kursovaya
             };
             player.OnGreenCircleOverlap += (m) =>
             {
-                pointsCount++;
-                objects.Remove(m);
-                objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
+                objects.Remove(marker);
+                marker = null;
+                Boom();
+                player.X = pbMain.Width / 2;
+                player.Y = pbMain.Height / 2;
             };
             player.OnRedCircleOverlap += (m) =>
             {
-                pointsCount--;
+                objects.Remove(marker);
+                marker = null;
+                Boom();
+                player.X = pbMain.Width / 2;
+                player.Y = pbMain.Height / 2;
                 objects.Remove(m);
                 objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0, 50));
             };
@@ -53,8 +58,25 @@ namespace Kursovaya
             objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
             objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
+            
 
 
+
+
+        }
+
+        private void Boom()
+        {
+            flag = true;
+            tempEmitter = new BoomEmitter
+            {
+                X = player.X,
+                Y = player.Y,
+                SpeedMin = 5,
+                SpeedMax = 10
+        };
+            
+            tempEmitter.CreateParticles();
 
 
 
@@ -62,13 +84,30 @@ namespace Kursovaya
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
-            flag = false;
             var g = e.Graphics;
             g.Clear(Color.Black);
             updatePlayer();
-            if(marker != null) { 
-            emitter.UpdateState();
-            emitter.Render(g);}
+            if (flag) { 
+                tempEmitter.UpdateState();
+            tempEmitter.Render(g);}
+                emitter.Direction = player.Angle;
+            if (marker != null)
+            {
+                
+                emitter.UpdateState();
+            emitter.Render(g);
+                
+               
+            }
+            
+                
+
+            else {
+                emitter.killAllParticles();
+                emitter.Render(g);
+            }
+                
+
             foreach (var obj in objects.ToList())
             {
                 if (obj != player && player.Overlaps(obj, g))
@@ -106,7 +145,7 @@ namespace Kursovaya
             {
                 marker = new Marker(0, 0, 0);
                 objects.Add(marker); 
-                flag = true;
+
             }
             marker.X = e.X;
             marker.Y = e.Y;
@@ -135,7 +174,8 @@ namespace Kursovaya
                 emitter.vY += dey * 0.9f;
 
                 player.Angle = 5 - MathF.Atan2(player.vX, player.vY) * 180 / MathF.PI;
-                
+                emitter.Angle = 5 - MathF.Atan2(emitter.vX, emitter.vY) * 180 / MathF.PI;
+
             }
             player.vX += -player.vX * 0.1f;
             player.vY += -player.vY * 0.1f;

@@ -9,8 +9,8 @@ namespace Kursovaya.Objects
 {
     internal class Planet : BaseObject
     {
-       public float size1 = -35;
-       public float size2 = 35;
+       public float size1 = -100;
+       public float size2 = 100;
         
         public Planet(float x, float y, float angle) : base(x, y, angle)
         {

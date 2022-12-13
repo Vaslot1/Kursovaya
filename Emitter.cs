@@ -9,27 +9,27 @@ namespace Kursovaya
 {
     public class Emitter
     {
-        List<Particle> particles = new List<Particle>();
+        public List<Particle> particles = new List<Particle>();
         public int MousePositionX;
         public int MousePositionY;
         public float GravitationX = 0;
         public float GravitationY = 0;
-        public int ParticlesCount = 5000;
+        public int ParticlesCount = 500;
         public float X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
         public float Y; // соответствующая координата Y 
-        public int Direction = 0; // вектор направления в градусах куда сыпет эмиттер
+        public float Direction = 0; // вектор направления в градусах куда сыпет эмиттер
         public int Spreading = 360; // разброс частиц относительно Direction
-        public int SpeedMin = 1; // начальная минимальная скорость движения частицы
-        public int SpeedMax = 10; // начальная максимальная скорость движения частицы
+        public int SpeedMin = 10; // начальная минимальная скорость движения частицы
+        public int SpeedMax = 50; // начальная максимальная скорость движения частицы
         public int RadiusMin = 2; // минимальный радиус частицы
         public int RadiusMax = 10; // максимальный радиус частицы
         public int LifeMin = 20; // минимальное время жизни частицы
         public int LifeMax = 40; // максимальное время жизни частицы
-        public int ParticlesPerTick = 100;
+        public int ParticlesPerTick = 1;
 
         public Color ColorFrom = Color.Orange; // начальный цвет частицы
         public Color ColorTo = Color.FromArgb(0, Color.Red); // конечный цвет частиц
-        public void UpdateState()
+        public virtual void UpdateState()
         {
             int particlesToCreate = ParticlesPerTick;
             foreach (var particle in particles)
@@ -65,6 +65,7 @@ namespace Kursovaya
                 ResetParticle(particle);
                 particles.Add(particle);
             }
+
         }
 
         public void Render(Graphics g)
