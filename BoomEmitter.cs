@@ -26,9 +26,10 @@ namespace Kursovaya
                     particle.Life -= 1;
                 if (particle.Life < 0)
                 {
+                    ParticlesCount -= 1;
                     if (ParticlesCount > 0)
                     {
-                        ParticlesCount -= 1;
+                        
                         ResetParticle(particle);
                     }
                 }

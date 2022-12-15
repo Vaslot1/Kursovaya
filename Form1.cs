@@ -5,6 +5,7 @@ namespace Kursovaya
 {
     public partial class Form1 : Form
     {
+        float speedrocket=0.4f;
         List<BaseObject> objects = new();
         Rocket player;
         Marker marker;
@@ -13,6 +14,7 @@ namespace Kursovaya
         SoploEmitter emitter;
         BoomEmitter tempEmitter;
         bool flag=false;
+        float timer = 0;
         public Form1()
         {
             InitializeComponent();
@@ -38,31 +40,44 @@ namespace Kursovaya
                 objects.Remove(marker);
                 marker = null;
                 Boom();
-                player.X = pbMain.Width / 2;
-                player.Y = pbMain.Height / 2;
+                player.X = -pbMain.Width / 2;
+                player.Y = -pbMain.Height / 2;
+                
             };
             player.OnRedCircleOverlap += (m) =>
             {
                 objects.Remove(marker);
                 marker = null;
                 Boom();
-                player.X = pbMain.Width / 2;
-                player.Y = pbMain.Height / 2;
+                player.X = -pbMain.Width / 2;
+                player.Y = -pbMain.Height / 2;
                 objects.Remove(m);
                 objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0, 50));
             };
             marker = new Marker(pbMain.Width / 2 + 50, pbMain.Height / 2 + 50, 0);
             objects.Add(marker);
             objects.Add(player);
-            objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
-            objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
-            objects.Add(new Planet(rnd.Next(20, pbMain.Width - 20), rnd.Next(20, pbMain.Height - 20), 0));
+            objects.Add(new Planet(pbMain.Width/4, pbMain.Height / 2, 0));
+            objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0));
+            objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
+            
             
 
 
 
 
+        }
+
+        private void reviveTime(Graphics g)
+        {
+            g.DrawString(
+    "\tYOU DIED\n"+"Дождитесь возрождения",
+    new Font("Impact", 32), // шрифт и размер
+    new SolidBrush(Color.Red), // цвет шрифта
+    pbMain.Width/5, 0 // точка в которой нарисовать текст
+);
+            
         }
 
         private void Boom()
@@ -70,16 +85,13 @@ namespace Kursovaya
             flag = true;
             tempEmitter = new BoomEmitter
             {
+               ParticlesCount=100,
                 X = player.X,
                 Y = player.Y,
-                SpeedMin = 5,
-                SpeedMax = 10
-        };
-            
+                SpeedMin = 1,
+                SpeedMax = 15
+            };
             tempEmitter.CreateParticles();
-
-
-
         }
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
@@ -87,10 +99,23 @@ namespace Kursovaya
             var g = e.Graphics;
             g.Clear(Color.Black);
             updatePlayer();
-            if (flag) { 
-                tempEmitter.UpdateState();
-            tempEmitter.Render(g);}
-                emitter.Direction = player.Angle;
+      
+            
+            if (flag) {
+                timer++;
+            reviveTime(g);
+            tempEmitter.UpdateState();
+            tempEmitter.Render(g);
+                if(timer > 100)
+                {
+                    player.X = pbMain.Width/2;
+                    player.Y = pbMain.Height / 2;
+                    timer = 0;
+                    flag = false;
+                   
+                }
+            }
+                
             if (marker != null)
             {
                 
@@ -99,9 +124,6 @@ namespace Kursovaya
                 
                
             }
-            
-                
-
             else {
                 emitter.killAllParticles();
                 emitter.Render(g);
@@ -116,16 +138,18 @@ namespace Kursovaya
                     obj.Overlap(player);
                 }
             }
-            for(int i = 0; i < objects.Count; i++)
+            foreach(var obj in objects)
             {
 
-                g.Transform = objects[i].GetTransform();
-                objects[i].Render(g);
+                g.Transform = obj.GetTransform();
+                obj.Render(g);
                
-                float radius = objects[i].UpdateRadius();
+                float radius = obj.UpdateRadius();
                 if (radius == 200)
                 {
-                    objects[i] = new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50);
+                    obj.X = rnd.Next(50, pbMain.Width - 50);
+                    obj.Y = rnd.Next(50, pbMain.Height - 50);
+                    obj.R = 50;
                 }
 
             }
@@ -141,6 +165,7 @@ namespace Kursovaya
 
         private void pbMain_MouseClick(object sender, MouseEventArgs e)
         {
+            if(timer == 0) { 
             if (marker == null)
             {
                 marker = new Marker(0, 0, 0);
@@ -149,6 +174,7 @@ namespace Kursovaya
             }
             marker.X = e.X;
             marker.Y = e.Y;
+            }
 
         }
         private void updatePlayer()
@@ -168,10 +194,10 @@ namespace Kursovaya
                 dey/= lengthE;
 
 
-                player.vX += dx * 0.9f;
-                player.vY += dy * 0.9f;
-                emitter.vX += dex * 0.9f;
-                emitter.vY += dey * 0.9f;
+                player.vX += dx * speedrocket;
+                player.vY += dy * speedrocket;
+                emitter.vX += dex * speedrocket;
+                emitter.vY += dey * speedrocket;
 
                 player.Angle = 5 - MathF.Atan2(player.vX, player.vY) * 180 / MathF.PI;
                 emitter.Angle = 5 - MathF.Atan2(emitter.vX, emitter.vY) * 180 / MathF.PI;
@@ -188,8 +214,11 @@ namespace Kursovaya
             emitter.X += emitter.vX;
             emitter.Y += emitter.vY;
         }
-        
 
+        private void speedRocket_Scroll(object sender, EventArgs e)
+        {
+            speedrocket = speedRocket.Value/10f;
+        }
     }
 
 }

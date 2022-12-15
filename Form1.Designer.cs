@@ -33,7 +33,10 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.txtLog = new System.Windows.Forms.RichTextBox();
             this.lbScore = new System.Windows.Forms.Label();
+            this.speedRocket = new System.Windows.Forms.TrackBar();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMain
@@ -69,17 +72,39 @@
             this.lbScore.TabIndex = 2;
             this.lbScore.Text = "Очки: ";
             // 
+            // speedRocket
+            // 
+            this.speedRocket.Location = new System.Drawing.Point(1, 454);
+            this.speedRocket.Minimum = 4;
+            this.speedRocket.Name = "speedRocket";
+            this.speedRocket.Size = new System.Drawing.Size(104, 45);
+            this.speedRocket.TabIndex = 3;
+            this.speedRocket.Value = 4;
+            this.speedRocket.Scroll += new System.EventHandler(this.speedRocket_Scroll);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(111, 454);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 15);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Скорость ракеты";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 450);
+            this.ClientSize = new System.Drawing.Size(1042, 505);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.speedRocket);
             this.Controls.Add(this.lbScore);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pbMain);
             this.Name = "Form1";
             this.Text = "Игра шарики";
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,5 +116,7 @@
         private System.Windows.Forms.Timer timer1;
         private RichTextBox txtLog;
         private Label lbScore;
+        private TrackBar speedRocket;
+        private Label label1;
     }
 }

@@ -20,15 +20,9 @@ namespace Kursovaya
 
         public Particle()
         {
-
-            var direction = (double)rand.Next(360);
-            var speed = 1 + rand.Next(10);
-
-
-            SpeedX = (float)(Math.Cos(direction / 180 * Math.PI) * speed);
-            SpeedY = -(float)(Math.Sin(direction / 180 * Math.PI) * speed);
+ 
             Radius = 2 + rand.Next(10);
-            Life = 20 + rand.Next(100);
+           
         }
         public virtual void Draw(Graphics g)
         {

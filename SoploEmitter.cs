@@ -27,8 +27,8 @@ namespace Kursovaya
             Y = rocket.Y;
 
 
-            particle.SpeedY = -rocket.vY + Particle.rand.Next(5);
-            particle.SpeedX = -rocket.vX + Particle.rand.Next(5);
+            particle.SpeedY = -rocket.vY + Particle.rand.Next(3);
+            particle.SpeedX = -rocket.vX + Particle.rand.Next(3);
         }
         public void killAllParticles()
         {

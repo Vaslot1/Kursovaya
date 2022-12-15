@@ -23,8 +23,8 @@ namespace Kursovaya
         public int SpeedMax = 50; // начальная максимальная скорость движения частицы
         public int RadiusMin = 2; // минимальный радиус частицы
         public int RadiusMax = 10; // максимальный радиус частицы
-        public int LifeMin = 20; // минимальное время жизни частицы
-        public int LifeMax = 40; // максимальное время жизни частицы
+        public int LifeMin = 40; // минимальное время жизни частицы
+        public int LifeMax = 60; // максимальное время жизни частицы
         public int ParticlesPerTick = 1;
 
         public Color ColorFrom = Color.Orange; // начальный цвет частицы
@@ -35,7 +35,7 @@ namespace Kursovaya
             foreach (var particle in particles)
             {
 
-                particle.Life -= 5;
+                particle.Life -= 2;
                 if (particle.Life < 0)
                 {
                     
@@ -80,7 +80,7 @@ namespace Kursovaya
         }
         public virtual void ResetParticle(Particle particle)
         {
-            particle.Life = 20 + Particle.rand.Next(100);
+            particle.Life = LifeMin + Particle.rand.Next(LifeMax);
             particle.X = X;
             particle.Y = Y;
 
