@@ -6,6 +6,7 @@ namespace Kursovaya
 {
     public partial class Form1 : Form
     {
+
         float speedrocket=0.4f;
         List<BaseObject> objects = new();
         Rocket player;
@@ -65,7 +66,7 @@ namespace Kursovaya
             objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0));
             objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
-            
+
             
 
 
@@ -266,6 +267,8 @@ namespace Kursovaya
                 int x = e.X, y = e.Y;
                 using (var g = Graphics.FromImage(pbMain.Image))
                 {
+                    foreach (var particle in tempEmitter.particles)
+                        particle.DrawInfo(g, x, y);
                     foreach (var particle in emitter.particles)
                         particle.DrawInfo(g, x, y);
                 }
