@@ -25,6 +25,7 @@ namespace Kursovaya
             var matrix = new Matrix();
             X = rocket.X;
             Y = rocket.Y;
+            Direction = Angle;
 
 
             particle.SpeedY = -rocket.vY + Particle.rand.Next(3);
@@ -33,16 +34,21 @@ namespace Kursovaya
         public void killAllParticles()
         {
             var particlesToCreate = 0;
-            foreach (var particle in this.particles)
+            for(int i =0; i<particles.Count; i++)
             {
+                var particle = particles[i];
                 if(particle.Life>0)
                 particle.Life -= 1;
-                if (particle.Life < 0)
+                if (particle.Life <= 0)
                 {
                     if (particlesToCreate > 0)
                     {
                         particlesToCreate -= 1;
                         ResetParticle(particle);
+                    }
+                    else
+                    {
+                        particles.Remove(particle);
                     }
                 }
                 else

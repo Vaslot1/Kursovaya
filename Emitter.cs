@@ -14,7 +14,7 @@ namespace Kursovaya
         public int MousePositionY;
         public float GravitationX = 0;
         public float GravitationY = 0;
-        public int ParticlesCount = 500;
+        public int ParticlesCount = 100;
         public float X; // координата X центра эмиттера, будем ее использовать вместо MousePositionX
         public float Y; // соответствующая координата Y 
         public float Direction = 0; // вектор направления в градусах куда сыпет эмиттер
@@ -68,12 +68,12 @@ namespace Kursovaya
 
         }
 
-        public void Render(Graphics g)
+        public void Render(Graphics g, bool debugOn)
         {
 
             foreach (var particle in particles)
             {
-                particle.Draw(g);
+                particle.Draw(g,debugOn);
             }
            
 
@@ -96,10 +96,13 @@ namespace Kursovaya
         public virtual Particle CreateParticle()
         {
             var particle = new ParticleColorful();
-            particle.FromColor = ColorFrom;
-            particle.ToColor = ColorTo;
+            particle.FromColor=ColorFrom;
+            particle.ToColor=ColorTo;
+            
 
             return particle;
         }
-    }
+        
+       
+        }
 }

@@ -35,8 +35,12 @@
             this.lbScore = new System.Windows.Forms.Label();
             this.speedRocket = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
+            this.cb_Debug = new System.Windows.Forms.CheckBox();
+            this.bt_StepDebug = new System.Windows.Forms.Button();
+            this.tb_updateSpeed = new System.Windows.Forms.TrackBar();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_updateSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // pbMain
@@ -48,6 +52,7 @@
             this.pbMain.TabStop = false;
             this.pbMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMain_Paint);
             this.pbMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseClick);
+            this.pbMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseMove);
             // 
             // timer1
             // 
@@ -91,11 +96,45 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Скорость ракеты";
             // 
+            // cb_Debug
+            // 
+            this.cb_Debug.AutoSize = true;
+            this.cb_Debug.Location = new System.Drawing.Point(247, 454);
+            this.cb_Debug.Name = "cb_Debug";
+            this.cb_Debug.Size = new System.Drawing.Size(102, 19);
+            this.cb_Debug.TabIndex = 5;
+            this.cb_Debug.Text = "Debug режим";
+            this.cb_Debug.UseVisualStyleBackColor = true;
+            this.cb_Debug.CheckedChanged += new System.EventHandler(this.cb_Debug_CheckedChanged);
+            // 
+            // bt_StepDebug
+            // 
+            this.bt_StepDebug.Location = new System.Drawing.Point(355, 454);
+            this.bt_StepDebug.Name = "bt_StepDebug";
+            this.bt_StepDebug.Size = new System.Drawing.Size(110, 23);
+            this.bt_StepDebug.TabIndex = 6;
+            this.bt_StepDebug.Text = "Следущий шаг";
+            this.bt_StepDebug.UseVisualStyleBackColor = true;
+            this.bt_StepDebug.Click += new System.EventHandler(this.bt_StepDebug_Click);
+            // 
+            // tb_updateSpeed
+            // 
+            this.tb_updateSpeed.Location = new System.Drawing.Point(482, 454);
+            this.tb_updateSpeed.Maximum = 6;
+            this.tb_updateSpeed.Name = "tb_updateSpeed";
+            this.tb_updateSpeed.Size = new System.Drawing.Size(104, 45);
+            this.tb_updateSpeed.TabIndex = 7;
+            this.tb_updateSpeed.Value = 6;
+            this.tb_updateSpeed.Scroll += new System.EventHandler(this.tb_updateSpeed_Scroll);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1042, 505);
+            this.Controls.Add(this.tb_updateSpeed);
+            this.Controls.Add(this.bt_StepDebug);
+            this.Controls.Add(this.cb_Debug);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.speedRocket);
             this.Controls.Add(this.lbScore);
@@ -105,6 +144,7 @@
             this.Text = "Игра шарики";
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tb_updateSpeed)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -118,5 +158,8 @@
         private Label lbScore;
         private TrackBar speedRocket;
         private Label label1;
+        private CheckBox cb_Debug;
+        private Button bt_StepDebug;
+        private TrackBar tb_updateSpeed;
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,6 @@ namespace Kursovaya
         public float X;
         public float Y;
         public float Life;
-
         public float SpeedX;
         public float SpeedY;
         public static Random rand = new Random();
@@ -20,11 +20,11 @@ namespace Kursovaya
 
         public Particle()
         {
- 
+
             Radius = 2 + rand.Next(10);
-           
+            
         }
-        public virtual void Draw(Graphics g)
+        public virtual void Draw(Graphics g, bool debugOn)
         {
 
             float k = Math.Min(1f, Life / 100);
@@ -41,6 +41,25 @@ namespace Kursovaya
 
 
             b.Dispose();
+        }
+        public void DrawInfo(Graphics g, int _x, int _y)
+        {
+            var x = Math.Abs(X - _x);
+            var y = Math.Abs(Y - _y);
+            var lenght = Math.Sqrt(x * x + y * y);
+
+            if (lenght < Radius)
+            {
+                var b = new SolidBrush(Color.SkyBlue);
+                g.FillRectangle(b, X, Y, 50, 50);
+
+                StringFormat stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                stringFormat.LineAlignment = StringAlignment.Center;
+                g.DrawString("X: " + (int)X, new Font("Arial", 10), Brushes.Black, X + 25, Y + 10, stringFormat);
+                g.DrawString("Y: " + (int)Y, new Font("Arial", 10), Brushes.Black, X + 25, Y + 25, stringFormat);
+                g.DrawString("Life: " + (int)Life, new Font("Arial", 10), Brushes.Black, X + 25, Y + 40, stringFormat);
+            }
         }
     }
     public class ParticleColorful : Particle
@@ -59,7 +78,7 @@ namespace Kursovaya
             );
         }
 
-        public override void Draw(Graphics g)
+        public override void Draw(Graphics g,bool debugOn)
         {
             float k = Math.Min(1f, Life / 100);
 
@@ -67,8 +86,15 @@ namespace Kursovaya
             var b = new SolidBrush(color);
 
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            if (debugOn)
+            {
+                
+                
+                g.DrawLine(new Pen(Color.OrangeRed, 2), X, Y, (int)(X + SpeedX ), (int)(Y + SpeedY ));
+            }
 
             b.Dispose();
         }
     }
+   
 }

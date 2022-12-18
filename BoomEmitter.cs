@@ -8,9 +8,9 @@ namespace Kursovaya
 {
     internal class BoomEmitter:Emitter
     {
-        public void CreateParticles()
+        public void CreateParticles(int v)
         {
-            for (int i = 0; i < ParticlesCount; i++)
+            for (int i = 0; i < v; i++)
             {
                 var particle = CreateParticle();
                 ResetParticle(particle);
@@ -19,19 +19,15 @@ namespace Kursovaya
         }
         public override void UpdateState()
         {
-            foreach (var particle in particles)
+            for (int i = 0; i < particles.Count; i++)
             {
-
+                var particle = particles[i];
                 if (particle.Life > 0)
                     particle.Life -= 1;
-                if (particle.Life < 0)
+                if (particle.Life <= 0)
                 {
-                    ParticlesCount -= 1;
-                    if (ParticlesCount > 0)
-                    {
-                        
-                        ResetParticle(particle);
-                    }
+                    ParticlesCount--;
+                    particles.Remove(particle); 
                 }
                 else
                 {

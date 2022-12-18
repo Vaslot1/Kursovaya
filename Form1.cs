@@ -1,4 +1,5 @@
 using Kursovaya.Objects;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Kursovaya
@@ -12,12 +13,15 @@ namespace Kursovaya
         Random rnd = new Random();
         int pointsCount = 0;
         SoploEmitter emitter;
-        BoomEmitter tempEmitter;
+        BoomEmitter tempEmitter=new BoomEmitter();
         bool flag=false;
         float timer = 0;
+        bool debugOn = false;
+        int _ticks = 0, updateSpeed=1;
         public Form1()
         {
             InitializeComponent();
+            pbMain.Image = new Bitmap(pbMain.Width, pbMain.Height);
             player = new Rocket(pbMain.Width / 2, pbMain.Height / 2, 0);
             emitter = new SoploEmitter
             {
@@ -73,9 +77,9 @@ namespace Kursovaya
         {
             g.DrawString(
     "\tYOU DIED\n"+"Дождитесь возрождения",
-    new Font("Impact", 32), // шрифт и размер
-    new SolidBrush(Color.Red), // цвет шрифта
-    pbMain.Width/5, 0 // точка в которой нарисовать текст
+    new Font("Impact", 32), 
+    new SolidBrush(Color.Red), 
+    pbMain.Width/5, 0 
 );
             
         }
@@ -85,81 +89,92 @@ namespace Kursovaya
             flag = true;
             tempEmitter = new BoomEmitter
             {
-               ParticlesCount=100,
                 X = player.X,
                 Y = player.Y,
                 SpeedMin = 1,
                 SpeedMax = 15
             };
-            tempEmitter.CreateParticles();
+            tempEmitter.CreateParticles(tempEmitter.ParticlesCount*speedRocket.Value/2);
         }
 
         private void pbMain_Paint(object sender, PaintEventArgs e)
         {
-            var g = e.Graphics;
-            g.Clear(Color.Black);
-            updatePlayer();
-      
             
-            if (flag) {
-                timer++;
-            reviveTime(g);
-            tempEmitter.UpdateState();
-            tempEmitter.Render(g);
-                if(timer > 100)
-                {
-                    player.X = pbMain.Width/2;
-                    player.Y = pbMain.Height / 2;
-                    timer = 0;
-                    flag = false;
-                   
-                }
-            }
-                
-            if (marker != null)
-            {
-                
-                emitter.UpdateState();
-            emitter.Render(g);
-                
-               
-            }
-            else {
-                emitter.killAllParticles();
-                emitter.Render(g);
-            }
-                
-
-            foreach (var obj in objects.ToList())
-            {
-                if (obj != player && player.Overlaps(obj, g))
-                {
-                    player.Overlap(obj);
-                    obj.Overlap(player);
-                }
-            }
-            foreach(var obj in objects)
-            {
-
-                g.Transform = obj.GetTransform();
-                obj.Render(g);
-               
-                float radius = obj.UpdateRadius();
-                if (radius == 200)
-                {
-                    obj.X = rnd.Next(50, pbMain.Width - 50);
-                    obj.Y = rnd.Next(50, pbMain.Height - 50);
-                    obj.R = 50;
-                }
-
-            }
-            lbScore.Text = "Очки: " + pointsCount;
-           
+            
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-           
+
+            _ticks++;
+            if (_ticks / updateSpeed > 0 || sender.Equals(bt_StepDebug))
+            {
+                _ticks %= updateSpeed;
+                updatePlayer();
+
+
+                using (var g = Graphics.FromImage(pbMain.Image))
+                {
+
+                    g.Clear(Color.Black);
+
+                    if (flag)
+                    {
+                        timer++;
+                        reviveTime(g);
+                        tempEmitter.UpdateState();
+                        tempEmitter.Render(g,debugOn);
+                        if (timer > 100)
+                        {
+                            player.X = pbMain.Width / 2;
+                            player.Y = pbMain.Height / 2;
+                            timer = 0;
+                            flag = false;
+
+                        }
+                    }
+
+                    if (marker != null)
+                    {
+
+                        emitter.UpdateState();
+                        emitter.Render(g,debugOn);
+
+
+                    }
+                    else
+                    {
+                        emitter.killAllParticles();
+                        emitter.Render(g,debugOn);
+                    }
+
+
+                    foreach (var obj in objects.ToList())
+                    {
+                        if (obj != player && player.Overlaps(obj, g))
+                        {
+                            player.Overlap(obj);
+                            obj.Overlap(player);
+                        }
+                    }
+                    foreach (var obj in objects)
+                    {
+
+                        g.Transform = obj.GetTransform();
+                        obj.Render(g);
+
+                        float radius = obj.UpdateRadius();
+                        if (radius == 200)
+                        {
+                            obj.X = rnd.Next(50, pbMain.Width - 50);
+                            obj.Y = rnd.Next(50, pbMain.Height - 50);
+                            obj.R = 50;
+                        }
+
+                    }
+                    lbScore.Text = "Очки: " + pointsCount;
+                }
+            }
             pbMain.Invalidate();
         }
 
@@ -175,6 +190,7 @@ namespace Kursovaya
             marker.X = e.X;
             marker.Y = e.Y;
             }
+            
 
         }
         private void updatePlayer()
@@ -217,7 +233,45 @@ namespace Kursovaya
 
         private void speedRocket_Scroll(object sender, EventArgs e)
         {
+            
             speedrocket = speedRocket.Value/10f;
+            emitter.ParticlesPerTick     = speedRocket.Value;
+
+        }
+
+        private void cb_Debug_CheckedChanged(object sender, EventArgs e)
+        {
+            debugOn = cb_Debug.Checked;
+        }
+
+        private void bt_StepDebug_Click(object sender, EventArgs e)
+        {
+            timer1_Tick(sender, e);
+            
+        }
+
+        private void tb_updateSpeed_Scroll(object sender, EventArgs e)
+        {
+            updateSpeed = tb_updateSpeed.Maximum - tb_updateSpeed.Value;
+            if (updateSpeed == tb_updateSpeed.Maximum)
+                updateSpeed = -1; 
+            else
+                updateSpeed = (int)Math.Pow(2, updateSpeed);
+        }
+
+        private void pbMain_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (debugOn)
+            {
+                int x = e.X, y = e.Y;
+                using (var g = Graphics.FromImage(pbMain.Image))
+                {
+                    foreach (var particle in emitter.particles)
+                        particle.DrawInfo(g, x, y);
+                }
+                    
+            }
+             
         }
     }
 
