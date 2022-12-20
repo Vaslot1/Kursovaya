@@ -28,7 +28,7 @@ namespace Kursovaya.Objects
         }
         public override float UpdateRadius()
         {
-            return R += 2;
+            return R += 1;
         }
     }
 }

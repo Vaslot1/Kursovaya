@@ -12,7 +12,6 @@ namespace Kursovaya
         Rocket player;
         Marker marker;
         Random rnd = new Random();
-        int pointsCount = 0;
         SoploEmitter emitter;
         BoomEmitter tempEmitter=new BoomEmitter();
         bool flag=false;
@@ -173,7 +172,7 @@ namespace Kursovaya
                         }
 
                     }
-                    lbScore.Text = "Очки: " + pointsCount;
+
                 }
             }
             pbMain.Invalidate();
@@ -236,7 +235,14 @@ namespace Kursovaya
         {
             
             speedrocket = speedRocket.Value/10f;
-            emitter.ParticlesPerTick     = speedRocket.Value;
+            emitter = new SoploEmitter
+            {
+                X = player.X,
+                Y = player.Y,
+                rocket = player,
+                GravitationY = 0,
+                ParticlesPerTick = speedRocket.Value - speedRocket.Minimum+1
+            };
 
         }
 

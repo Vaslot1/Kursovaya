@@ -32,12 +32,12 @@
             this.pbMain = new System.Windows.Forms.PictureBox();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.txtLog = new System.Windows.Forms.RichTextBox();
-            this.lbScore = new System.Windows.Forms.Label();
             this.speedRocket = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.cb_Debug = new System.Windows.Forms.CheckBox();
             this.bt_StepDebug = new System.Windows.Forms.Button();
             this.tb_updateSpeed = new System.Windows.Forms.TrackBar();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb_updateSpeed)).BeginInit();
@@ -67,15 +67,6 @@
             this.txtLog.Size = new System.Drawing.Size(234, 446);
             this.txtLog.TabIndex = 1;
             this.txtLog.Text = "";
-            // 
-            // lbScore
-            // 
-            this.lbScore.AutoSize = true;
-            this.lbScore.Location = new System.Drawing.Point(740, 18);
-            this.lbScore.Name = "lbScore";
-            this.lbScore.Size = new System.Drawing.Size(42, 15);
-            this.lbScore.TabIndex = 2;
-            this.lbScore.Text = "Очки: ";
             // 
             // speedRocket
             // 
@@ -127,17 +118,26 @@
             this.tb_updateSpeed.Value = 6;
             this.tb_updateSpeed.Scroll += new System.EventHandler(this.tb_updateSpeed_Scroll);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(592, 458);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(140, 15);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Скорость перемещения";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1042, 505);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.tb_updateSpeed);
             this.Controls.Add(this.bt_StepDebug);
             this.Controls.Add(this.cb_Debug);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.speedRocket);
-            this.Controls.Add(this.lbScore);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pbMain);
             this.Name = "Form1";
@@ -155,11 +155,11 @@
         private PictureBox pbMain;
         private System.Windows.Forms.Timer timer1;
         private RichTextBox txtLog;
-        private Label lbScore;
         private TrackBar speedRocket;
         private Label label1;
         private CheckBox cb_Debug;
         private Button bt_StepDebug;
         private TrackBar tb_updateSpeed;
+        private Label label2;
     }
 }
