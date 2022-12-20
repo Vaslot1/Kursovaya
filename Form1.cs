@@ -1,5 +1,7 @@
 using Kursovaya.Objects;
+using Kursovaya.ParticleSystem;
 using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Numerics;
 
 namespace Kursovaya
@@ -18,6 +20,8 @@ namespace Kursovaya
         float timer = 0;
         bool debugOn = false;
         int _ticks = 0, updateSpeed=1;
+        ParticleRadar radar;
+        List<Emitter> emitters=new();
         public Form1()
         {
             InitializeComponent();
@@ -28,7 +32,8 @@ namespace Kursovaya
                 X = player.X,
                 Y = player.Y,
                 rocket = player,
-                GravitationY = 0
+                GravitationY = 0,
+                ParticlesPerTick = speedRocket.Value-speedRocket.Minimum+1
             };
             player.OnOverlap += (p, obj) =>
             {
@@ -65,8 +70,11 @@ namespace Kursovaya
             objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0));
             objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
+            tempEmitter = new();
+            emitters.Add(emitter);
+            emitters.Add(tempEmitter);
 
-            
+
 
 
 
@@ -87,13 +95,10 @@ namespace Kursovaya
         private void Boom()
         {
             flag = true;
-            tempEmitter = new BoomEmitter
-            {
-                X = player.X,
-                Y = player.Y,
-                SpeedMin = 1,
-                SpeedMax = 15
-            };
+            tempEmitter.X = player.X;
+            tempEmitter.Y = player.Y;
+            tempEmitter.SpeedMin = 1;
+            tempEmitter.SpeedMax = 15;
             tempEmitter.CreateParticles(tempEmitter.ParticlesCount*speedRocket.Value/2);
         }
 
@@ -105,7 +110,7 @@ namespace Kursovaya
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
+            int counter=0;
             _ticks++;
             if (_ticks / updateSpeed > 0 || sender.Equals(bt_StepDebug))
             {
@@ -117,6 +122,19 @@ namespace Kursovaya
                 {
 
                     g.Clear(Color.Black);
+                    if (radar != null) {
+                        
+                            radar.ImpactParticle(emitters);
+                        
+                        counter += radar.countDetectedParticles;
+                       
+                            radar.current_countDetectedParticles = counter;
+                            radar.Render(g);
+                            
+             
+                        
+                    }
+                    
 
                     if (flag)
                     {
@@ -125,13 +143,15 @@ namespace Kursovaya
                         tempEmitter.UpdateState();
                         tempEmitter.Render(g,debugOn);
                         if (timer > 100)
-                        {
+                        { 
+                            
                             player.X = pbMain.Width / 2;
                             player.Y = pbMain.Height / 2;
                             timer = 0;
                             flag = false;
 
                         }
+
                     }
 
                     if (marker != null)
@@ -264,6 +284,17 @@ namespace Kursovaya
                 updateSpeed = -1; 
             else
                 updateSpeed = (int)Math.Pow(2, updateSpeed);
+        }
+
+        private void pbMain_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (radar == null)
+            {
+                radar = new ParticleRadar(0, 0);
+            }
+            radar.X = e.X;
+            radar.Y = e.Y;
+
         }
 
         private void pbMain_MouseMove(object sender, MouseEventArgs e)

@@ -22,24 +22,24 @@ namespace Kursovaya
         {
             for (int i = 0; i < particles.Count; i++)
             {
-                var particle = particles[i];
-                if (particle.Life > 0)
-                    particle.Life -= 1;
-                if (particle.Life <= 0)
+                
+                if (particles[i].Life > 0)
+                    particles[i].Life -= 1;
+                if (particles[i].Life <= 0)
                 {
-                    ParticlesCount--;
-                    particles.Remove(particle); 
+                    
+                    particles.Remove(particles[i]); 
                 }
                 else
                 {
 
 
-                    particle.SpeedX += GravitationX;
-                    particle.SpeedY += GravitationY;
+                    particles[i].SpeedX += GravitationX;
+                    particles[i].SpeedY += GravitationY;
 
 
-                    particle.X += particle.SpeedX;
-                    particle.Y += particle.SpeedY;
+                    particles[i].X += particles[i].SpeedX;
+                    particles[i].Y += particles[i].SpeedY;
                 }
             }
             

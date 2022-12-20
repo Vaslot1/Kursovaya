@@ -26,6 +26,7 @@ namespace Kursovaya.ParticleSystem
         public int LifeMax = 60; // максимальное время жизни частицы
         public int ParticlesPerTick = 1;
 
+
         public Color ColorFrom = Color.Orange; // начальный цвет частицы
         public Color ColorTo = Color.FromArgb(0, Color.Red); // конечный цвет частиц
         public virtual void UpdateState()
