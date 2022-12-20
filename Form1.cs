@@ -16,12 +16,13 @@ namespace Kursovaya
         Random rnd = new Random();
         SoploEmitter emitter;
         BoomEmitter tempEmitter=new BoomEmitter();
-        bool flag=false;
+        bool youDied=false;
         float timer = 0;
         bool debugOn = false;
         int _ticks = 0, updateSpeed=1;
         ParticleRadar radar;
         List<Emitter> emitters=new();
+        bool soploChanged =false;
         public Form1()
         {
             InitializeComponent();
@@ -94,7 +95,7 @@ namespace Kursovaya
 
         private void Boom()
         {
-            flag = true;
+            youDied = true;
             tempEmitter.X = player.X;
             tempEmitter.Y = player.Y;
             tempEmitter.SpeedMin = 1;
@@ -124,19 +125,23 @@ namespace Kursovaya
                     g.Clear(Color.Black);
                     if (radar != null) {
                         
-                            radar.ImpactParticle(emitters);
+                            radar.ImpactParticle(emitters,soploChanged);
+                            counter += radar.countDetectedParticles;
                         
-                        counter += radar.countDetectedParticles;
-                       
                             radar.current_countDetectedParticles = counter;
-                            radar.Render(g);
+                        if (soploChanged)
+                        {
+                            radar.current_countDetectedParticles = 0;
+                            soploChanged = false;
+                        }
+                        radar.Render(g);
                             
              
                         
                     }
                     
 
-                    if (flag)
+                    if (youDied)
                     {
                         timer++;
                         reviveTime(g);
@@ -148,7 +153,7 @@ namespace Kursovaya
                             player.X = pbMain.Width / 2;
                             player.Y = pbMain.Height / 2;
                             timer = 0;
-                            flag = false;
+                            youDied = false;
 
                         }
 
@@ -255,6 +260,7 @@ namespace Kursovaya
         {
             
             speedrocket = speedRocket.Value/10f;
+            emitter.particles.Clear();
             emitter = new SoploEmitter
             {
                 X = player.X,
@@ -263,7 +269,8 @@ namespace Kursovaya
                 GravitationY = 0,
                 ParticlesPerTick = speedRocket.Value - speedRocket.Minimum+1
             };
-
+            emitters.Insert(0, emitter);
+            soploChanged = true;
         }
 
         private void cb_Debug_CheckedChanged(object sender, EventArgs e)

@@ -24,10 +24,10 @@ namespace Kursovaya.ParticleSystem
         {
             g.DrawEllipse(new Pen(Color.Green, 3), X - R, Y - R, R * 2, R * 2);
             g.DrawString(
-                $"{countDetectedParticles}",
-                new Font("Verdana", 15), // шрифт и его размер
-                new SolidBrush(Color.Red), // цвет шрифта
-                X - 15, // расположение в пространстве
+                $"{current_countDetectedParticles}",
+                new Font("Verdana", 15), 
+                new SolidBrush(Color.Red), 
+                X - 15, 
                 Y - 15
                 );
 
@@ -39,23 +39,23 @@ namespace Kursovaya.ParticleSystem
             path.AddEllipse(-R / 2, -R / 2, R, R);
             return path;
         }
-        public void ImpactParticle(List<Emitter> emitters)
+        public void ImpactParticle(List<Emitter> emitters, bool soploChanged)
         {
             countDetectedParticles = 0;
-            
+                for (int j = 0;j<emitters.Count;j++) {
                 
-                foreach (var emitter in emitters) {   
-                    for (int i = 0; i < emitter.particles.Count; i++)
+                    for (int i = 0; i < emitters[j].particles.Count; i++)
                     {
-                        float gX = this.X - emitter.particles[i].X;
-                        float gY = this.Y - emitter.particles[i].Y;
+                        float gX = this.X - emitters[j].particles[i].X;
+                        float gY = this.Y - emitters[j].particles[i].Y;
 
                         double r = Math.Sqrt(gX * gX + gY * gY);
-                        if (r < this.R + emitter.particles[i].Radius)
+                        if (r < this.R + emitters[j].particles[i].Radius)
                         {
                             countDetectedParticles++;
                         }
-               } 
+               }
+                
             }
 
         }
