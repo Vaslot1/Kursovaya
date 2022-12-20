@@ -144,7 +144,7 @@
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.pbMain);
             this.Name = "Form1";
-            this.Text = "Игра шарики";
+            this.Text = "Игра про ракету и частицы";
             ((System.ComponentModel.ISupportInitialize)(this.pbMain)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.speedRocket)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.tb_updateSpeed)).EndInit();

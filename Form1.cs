@@ -70,7 +70,7 @@ namespace Kursovaya
             objects.Add(player);
             objects.Add(new Planet(pbMain.Width/4, pbMain.Height / 2, 0, new TextureBrush(Properties.Resources.mars)));
             objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0, new TextureBrush(Properties.Resources.earth)));
-            objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0, new TextureBrush(Properties.Resources.neptune)));
+            objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+80, 0, new TextureBrush(Properties.Resources.neptune)));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
             tempEmitter = new();
             emitters.Add(emitter);
