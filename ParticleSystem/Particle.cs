@@ -15,6 +15,7 @@ namespace Kursovaya.ParticleSystem
         public float Life;
         public float SpeedX;
         public float SpeedY;
+        public bool rendered;
         public static Random rand = new Random();
 
 
@@ -84,8 +85,10 @@ namespace Kursovaya.ParticleSystem
 
             var color = MixColor(ToColor, FromColor, k);
             var b = new SolidBrush(color);
-
+            if(!rendered)
             g.FillEllipse(b, X - Radius, Y - Radius, Radius * 2, Radius * 2);
+            else
+                g.FillEllipse(new SolidBrush(Color.White), X - Radius, Y - Radius, Radius * 2, Radius * 2);
             if (debugOn)
             {
 

@@ -22,7 +22,7 @@ namespace Kursovaya.ParticleSystem
         }
         public void Render(Graphics g)
         {
-            g.DrawEllipse(new Pen(Color.Green, 3), X - R, Y - R, R * 2, R * 2);
+            g.DrawEllipse(new Pen(Color.White, 3), X - R, Y - R, R * 2, R * 2);
             g.DrawString(
                 $"{current_countDetectedParticles}",
                 new Font("Verdana", 15), 
@@ -53,8 +53,12 @@ namespace Kursovaya.ParticleSystem
                         if (r < this.R + emitters[j].particles[i].Radius)
                         {
                             countDetectedParticles++;
+                        emitters[j].particles[i].rendered = true;
+
                         }
-               }
+                        else
+                        emitters[j].particles[i].rendered = false;
+                }
                 
             }
 

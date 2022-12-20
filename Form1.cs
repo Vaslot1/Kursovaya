@@ -23,6 +23,7 @@ namespace Kursovaya
         ParticleRadar radar;
         List<Emitter> emitters=new();
         bool soploChanged =false;
+        Brush fonBrush = new TextureBrush(Properties.Resources.space);
         public Form1()
         {
             InitializeComponent();
@@ -67,9 +68,9 @@ namespace Kursovaya
             marker = new Marker(pbMain.Width / 2 + 50, pbMain.Height / 2 + 50, 0);
             objects.Add(marker);
             objects.Add(player);
-            objects.Add(new Planet(pbMain.Width/4, pbMain.Height / 2, 0));
-            objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0));
-            objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0));
+            objects.Add(new Planet(pbMain.Width/4, pbMain.Height / 2, 0, new TextureBrush(Properties.Resources.mars)));
+            objects.Add(new Planet(pbMain.Width /2, pbMain.Height / 2+200, 0, new TextureBrush(Properties.Resources.earth)));
+            objects.Add(new Planet(pbMain.Width / 1.2f + 50, pbMain.Height / 3+50, 0, new TextureBrush(Properties.Resources.neptune)));
             objects.Add(new RedCircle(rnd.Next(50, pbMain.Width - 50), rnd.Next(50, pbMain.Height - 50), 0,50));
             tempEmitter = new();
             emitters.Add(emitter);
@@ -122,7 +123,7 @@ namespace Kursovaya
                 using (var g = Graphics.FromImage(pbMain.Image))
                 {
 
-                    g.Clear(Color.Black);
+                    g.Clear(Color.FromArgb(0, 0, 0, 0));
                     if (radar != null) {
                         
                             radar.ImpactParticle(emitters,soploChanged);
@@ -319,6 +320,13 @@ namespace Kursovaya
                     
             }
              
+        }
+        private void pbMain_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (radar != null)
+            {
+                radar.R += e.Delta/5;
+            }
         }
     }
 

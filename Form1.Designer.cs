@@ -45,15 +45,17 @@
             // 
             // pbMain
             // 
+            this.pbMain.BackgroundImage = global::Kursovaya.Properties.Resources.space;
             this.pbMain.Location = new System.Drawing.Point(1, 2);
             this.pbMain.Name = "pbMain";
-            this.pbMain.Size = new System.Drawing.Size(798, 446);
+            this.pbMain.Size = new System.Drawing.Size(807, 446);
             this.pbMain.TabIndex = 0;
             this.pbMain.TabStop = false;
             this.pbMain.Paint += new System.Windows.Forms.PaintEventHandler(this.pbMain_Paint);
             this.pbMain.MouseClick += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseClick);
             this.pbMain.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseDoubleClick);
             this.pbMain.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseMove);
+            this.pbMain.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pbMain_MouseWheel);
             // 
             // timer1
             // 
@@ -132,7 +134,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1042, 505);
+            this.ClientSize = new System.Drawing.Size(1041, 529);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tb_updateSpeed);
             this.Controls.Add(this.bt_StepDebug);

@@ -9,15 +9,17 @@ namespace Kursovaya.Objects
 {
     internal class Planet : BaseObject
     {
-       public float size1 = -100;
-       public float size2 = 100;
+       public float size1 = -128;
+       public float size2 = 128;
+        Brush planetBrush;
         
-        public Planet(float x, float y, float angle) : base(x, y, angle)
+        public Planet(float x, float y, float angle,Brush brush) : base(x, y, angle)
         {
+            planetBrush = brush;
         }
         public override void Render(Graphics g)
         {
-            g.FillEllipse(new SolidBrush(Color.Green), size1, size1 , size2 , size2);
+            g.FillEllipse(planetBrush, size1, size1 , size2 , size2);
            
         }
         public override GraphicsPath GetGraphicsPath()
