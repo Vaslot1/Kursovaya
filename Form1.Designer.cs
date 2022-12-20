@@ -107,7 +107,7 @@
             this.bt_StepDebug.Name = "bt_StepDebug";
             this.bt_StepDebug.Size = new System.Drawing.Size(110, 23);
             this.bt_StepDebug.TabIndex = 6;
-            this.bt_StepDebug.Text = "Следущий шаг";
+            this.bt_StepDebug.Text = "Следующий шаг";
             this.bt_StepDebug.UseVisualStyleBackColor = true;
             this.bt_StepDebug.Click += new System.EventHandler(this.bt_StepDebug_Click);
             // 
